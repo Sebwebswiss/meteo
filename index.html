@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vremenska Prognoza</title>
+</head>
+<body>
+    <h1>Trenutno Vrijeme La Croix sur Lutry</h1>
+    <p id="weatherInfo"></p>
+
+    <script>
+        function fetchWeather() {
+            const apiKey = '6dada2ac3f0fdd4184d67e033bf5deb2'; // Zamijenite sa svojim API ključem
+            const city = 'Savigny'; // Zamijenite sa željenim gradom
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=hr`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const temp = data.main.temp;
+                    const weather = data.weather[0].description;
+                    const humidity = data.main.humidity;
+                    const pressure = data.main.pressure; // Atmosferski tlak
+                    const sunrise = new Date(data.sys.sunrise * 1000); // Vrijeme izlaska sunca
+                    const sunset = new Date(data.sys.sunset * 1000); // Vrijeme zalaska sunca
+                    // const feelsLike = data.main.feels_like; // Temperatura osjeta
+                    const windSpeed = data.wind.speed; // Brzina vjetra
+                    const windDirection = data.wind.deg; // Smjer vjetra u stupnjevima
+                    const tempMin = data.main.temp_min; // Minimalna temperatura
+                    const tempMax = data.main.temp_max; // Maksimalna temperatura
+
+
+
+
+                    document.getElementById('weatherInfo').innerHTML = `Temperatura: ${temp} °C<br>Stanje: ${weather}<br>Vlažnost zraka: ${humidity}%<br>Pritisak: ${pressure} hPa<br>Izlazak sunca: ${sunrise.toLocaleTimeString()}<br>Zalazak sunca: ${sunset.toLocaleTimeString()} <br> Brzina vjetra: ${windSpeed} kmh <br> Minimalna temperatura: ${tempMin} °C <br> Maximalna temperatura: ${tempMax} °C` ;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        fetchWeather();
+        setInterval(fetchWeather, 300000);
+    </script>
+</body>
+</html>
